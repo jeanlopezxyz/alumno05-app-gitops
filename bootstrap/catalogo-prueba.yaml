@@ -1,0 +1,39 @@
+# Ambiente temporal (laboratorio 4, paso 7): la base de catalogo en un namespace vacío.
+# Usa la base y no el overlay dev para no depender del ExternalSecret de dev: la contraseña
+# la genera CloudNativePG. kustomize.namespace y kustomize.patches ponen namespace y host.
+# Proyecto default (de la plataforma): team-api no puede crear namespaces (laboratorio 3).
+# Con el finalizer, al quitar este archivo de Git Argo CD borra también sus recursos.
+# Fuentes: https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/
+#          https://argo-cd.readthedocs.io/en/stable/user-guide/app_deletion/
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: catalogo-prueba
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jeanlopezxyz/alumno05-app-gitops.git
+    targetRevision: main
+    path: apps/catalogo/base
+    kustomize:
+      namespace: catalogo-prueba
+      patches:
+        - target:
+            kind: Ingress
+            name: catalogo
+          patch: |
+            - op: replace
+              path: /spec/rules/0/host
+              value: catalogo-prueba-alumno05.argocd-lab.sandbox3477.opentlc.com
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: catalogo-prueba
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
