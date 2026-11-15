@@ -19,6 +19,7 @@ patches:
   target:
     kind: Ingress
     name: catalogo
+- path: romper-api.yaml
 replicas:
 - count: 2
   name: catalogo-frontend
