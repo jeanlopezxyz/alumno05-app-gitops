@@ -8,6 +8,7 @@ namespace: catalogo-prod
 
 resources:
 - ../../base
+- prueba-impersonation.yaml
 
 # El host del Ingress es un marcador en la base; aquí se pone el real.
 patches:
