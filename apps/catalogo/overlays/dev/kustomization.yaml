@@ -19,7 +19,7 @@ patches:
   target:
     kind: Ingress
     name: catalogo
-- patch: '[{"op":"add","path":"/metadata/annotations/catalogo.example.com~1prueba","value":"1"}]'
+- patch: '[{"op":"add","path":"/metadata/annotations/catalogo.example.com~1prueba","value":"2"}]'
   target:
     kind: Service
     name: catalogo-frontend
