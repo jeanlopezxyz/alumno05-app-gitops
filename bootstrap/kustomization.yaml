@@ -13,3 +13,4 @@ resources:
 - catalogo-appset.yaml
 - monitoring.yaml
 - argo-rollouts.yaml
+- catalogo-operadores.yaml
